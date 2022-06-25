@@ -1,0 +1,23 @@
+config BR2_PERDITA
+	bool "perdita"
+	select BR2_CHENXING
+	select BR2_LINUX_KERNEL
+
+config BR2_PERDITA_MAIN
+	bool "perdita main"
+	select BR2_PERDITA
+
+config BR2_PERDITA_RESCUE
+	bool "perdita rescue"
+	select BR2_PERDITA
+	select BR2_PACKAGE_DGPRESCUE
+
+if BR2_PERDITA
+
+config BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE
+	default "$(BR2_EXTERNAL_PERDITA_PATH)/board/thingyjp/perdita/linux.config"
+
+config BR2_LINUX_KERNEL_INTREE_DTS_NAME
+	default "mstar-pioneer3-ssd210-perdita"
+
+endif

@@ -1,0 +1,95 @@
+/dts-v1/;
+
+/ {
+	description = "Perdita Rescue FIT";
+	#address-cells = <1>;
+
+	images {
+		kernel-0 {
+			data = /incbin/("../../images/zImage");
+			type = "kernel";
+			arch = "arm";
+			os = "linux";
+			compression = "none";
+			load = <0x21800000>;
+                        entry = <0x21800000>;
+			hash-1 {
+				algo = "crc32";
+			};
+			hash-2 {
+				algo = "sha1";
+			};
+		};
+		fdt-0 {
+			data = /incbin/("../../images/mstar-pioneer3-ssd210-perdita-rescue.dtb");
+			type = "flat_dt";
+			arch = "arm";
+			compression = "none";
+			hash-1 {
+				algo = "crc32";
+			};
+			hash-2 {
+				algo = "sha1";
+			};
+		};
+		fdt-picow {
+			data = /incbin/("../../images/mstar-pioneer3-ssd210-100ask-dongshanpipicow.dtb");
+			type = "flat_dt";
+			arch = "arm";
+			compression = "none";
+			load = <0x22d00000>;
+			hash-1 {
+				algo = "crc32";
+			};
+			hash-2 {
+				algo = "sha1";
+			};
+		};
+		fdt-picow-snander {
+			data = /incbin/("../../images/mstar-pioneer3-ssd210-100ask-dongshanpipicow-snander.dtb");
+			type = "flat_dt";
+			arch = "arm";
+			compression = "none";
+			load = <0x22e00000>;
+			hash-1 {
+				algo = "crc32";
+			};
+			hash-2 {
+				algo = "sha1";
+			};
+		};
+		ramdisk-0 {
+			data = /incbin/("../../images/rootfs.cpio.lz4");
+			type = "ramdisk";
+			arch = "arm";
+			os = "linux";
+			compression = "none";
+			hash-1 {
+				algo = "crc32";
+			};
+			hash-2 {
+				algo = "sha1";
+			};
+		};
+	};
+
+	configurations {
+		default = "ssd210-perdita";
+		ssd210-perdita {
+			description = "thiny.jp perdita";
+			kernel = "kernel-0";
+			fdt = "fdt-0";
+			ramdisk = "ramdisk-0";
+		};
+		ssd210-picow {
+			description = "100ask picow";
+			kernel = "kernel-0";
+			fdt = "fdt-picow";
+			ramdisk = "ramdisk-0";
+		};
+		ssd210-picow-snander {
+			description = "100ask picow, snander overlay";
+			fdt = "fdt-picow-snander";
+		};
+	};
+};
