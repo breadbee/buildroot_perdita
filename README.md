@@ -1,9 +1,11 @@
 # buildroot_perdita
 
-## Initial steps with snander_electricboogaloo
+## Initial steps with snander_electricboogaloo via ISP
 
 FILE=perdita-gcis.bin; cd /tmp && tftp -g -r $FILE 192.168.3.197
 FILE=perdita-ipl; cd /tmp && tftp -g -r $FILE 192.168.3.197
+
+### Perdita
 
 ```
 export SNANDER_I2CDEV=/dev/i2c-10:49
@@ -13,7 +15,7 @@ snander_electricboogaloo -p mstarddc -c $SNANDER_I2CDEV -a 0x20000 -v -w perdita
 snander_electricboogaloo -p mstarddc -c $SNANDER_I2CDEV -a 0x40000 -v -w perdita-ipl
 ```
 
-## PicoW
+### PicoW
 
 FILE=perdita-gcis.bin; cd /tmp && tftp -g -r $FILE 192.168.3.197
 FILE=dongshanpipicow-ipl; cd /tmp && tftp -g -r $FILE 192.168.3.197
@@ -30,7 +32,11 @@ snander_electricboogaloo -p mstarddc -c $SNANDER_I2CDEV -a 0x40000 -v -w -f $BIN
 snander_electricboogaloo -p mstarddc -c $SNANDER_I2CDEV -a 0x60000 -v -w -f $BINDIR/dongshanpipicow-u-boot.ubi
 ```
 
-### Manually creating the partitions in u-boot
+## Initial steps with p3udl via USB
+
+See https://github.com/linux-chenxing/p3udl
+
+## Manually creating the partitions in u-boot
 
 ```
 ubi createvol uboot 0x100000 static
@@ -44,23 +50,24 @@ ubi createvol data
 ```
 loady ${loadaddr} 460800;
 ubi writevol ${loadaddr} kernel ${filesize}
-
 ubi writevol ${loadaddr} root ${filesize}
+ubi writevol ${loadaddr} rescue ${filesize}
+
 ```
 
-### Manually booting
+## Manually booting
 
 ```
 mw.w 0x1f207980 0x200; setenv bootargs clk_ignore_unused usbcore.autosuspend=-1 console=ttyS0,115200 ubi.fm_autoconvert=1 ubi.mtd=1 ubi.block=0,root root=/dev/ubiblock0_3 quiet; ubi read 0x21000000 kernel; bootm 0x21000000
 ```
 
-### Manually updating the rescue image
+## Manually updating the rescue image
 
 ```
 UBIFILE=perdita-kernel-rescue.fit; cd /tmp && tftp -g -r $UBIFILE 192.168.3.197 && ubiupdatevol /dev/ubi0_4 $UBIFILE
 ```
 
-### Manually booting the rescue image
+## Manually booting the rescue image
 
 In u-boot:
 

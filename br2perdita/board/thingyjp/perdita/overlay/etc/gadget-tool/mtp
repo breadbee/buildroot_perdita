@@ -1,0 +1,35 @@
+attrs :
+{
+    idVendor = 0x1D6B;
+    idProduct = 0x104;
+};
+
+strings = (
+    {
+        lang = 0x409;
+        manufacturer = "thingy.jp";
+        product = "Perdita";
+    }
+);
+
+functions :
+{
+    ffs_mtp :
+    {
+        instance = "mtp";
+        type = "ffs";
+    };
+};
+
+configs = (
+    {
+        id = 1;
+        name = "c";
+        functions = (
+            {
+                name = "ffs.mtp";
+                function = "ffs_mtp";
+            }
+        );
+    }
+);
